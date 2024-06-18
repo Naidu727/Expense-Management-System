@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const exp = require('constants');
 const connectDb = require('./config/connectDB');
+const path = require('path')
 dotenv.config();
 //database call
 connectDb();
@@ -18,6 +19,11 @@ app.use(cors());
 app.use('/api/v1/users',require('./routes/userRoute'))
 app.use('/api/v1/transections',require('./routes/transectionRoute'))
 //port
+app.use(express.static(path.join(__dirname,"./client/build")))
+app.get('*',function(req,res)
+{
+    res.sendFile(path.join(__dirname,"./client/build/index.html"))
+})
 const PORT = 8080 || process.env.PORT
 //listen server
 app.listen(PORT,()=>{
